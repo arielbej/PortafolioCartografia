@@ -58,9 +58,9 @@
                 <div class="card-image placeholder-pdf"></div>
                 <div class="card-content">
                     <h3>Práctica 3: Climatología</h3>
-                    <p>Mapa de temperaturas y precipitaciones.</p>
+                    <p>Mapa de temperaturas medias en España (Junio 2024).</p>
                     <span class="tag">Documento PDF</span>
-                    <a href="assets/docs/p3_mapa.pdf" target="_blank" class="btn-card">Descargar PDF</a>
+                    <a href="#" onclick="openPDF('assets/docs/TEMPERATURAS.pdf'); return false;" class="btn-card">Ver Mapa</a>
                 </div>
             </article>
 
@@ -126,6 +126,19 @@
 
         </div>
     </main>
+
+    <div id="pdfModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3 id="modalTitle">Visualizador de Documento</h3>
+        
+        <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
+        
+        <div class="modal-footer">
+            <a id="downloadLink" href="" target="_blank" class="btn-card" style="background-color: #333;">Descargar / Abrir Pantalla Completa</a>
+        </div>
+    </div>
+    </div>
 
     <footer>
         <p>&copy; 2025 Portafolio de Tecnologías de la Información Geográfica.</p>
