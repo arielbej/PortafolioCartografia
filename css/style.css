@@ -181,6 +181,8 @@ h1, h2, h3 {
 }
 
 /* TARJETAS */
+
+
 .card {
     background: var(--white);
     border-radius: 12px;
@@ -199,6 +201,7 @@ h1, h2, h3 {
 
 .card-image {
     height: 200px;
+    width: 100%;
     background-color: #ecf0f1;
     background-size: cover;
     background-position: center;
