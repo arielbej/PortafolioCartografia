@@ -333,3 +333,28 @@ footer {
         margin: 10% auto;
     }
 }
+
+/* Modal para WebMaps - más grande que el de PDFs */
+.modal-webmap {
+    max-width: 95%;
+    width: 1200px;
+}
+
+#webmapFrame {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: 600px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-webmap {
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    #webmapFrame {
+        height: 400px;
+        min-height: 400px;
+    }
+}
