@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Cartografía | Juan Bautista Peris, Marc Vilagrosa y Ariel Bejarán</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="hero">
+        <div class="overlay"></div> <div class="hero-content">
+            <h1>Portafolio de Cartografía Web</h1>
+            <p class="subtitle">Recopilación de prácticas y proyectos espaciales</p>
+            <p class="author">Realizado por: Juan Bautista Peris, Marc Vilagrosa y Ariel Bejarán</p>
+            
+            <a href="#portfolio" class="btn-scroll">Ver Proyectos</a>
+        </div>
+        
+        <a href="#intro" class="scroll-down-arrow">
+            <span>&#8595;</span> </a>
+    </header>
+
+    <section id="intro" class="intro">
+        <div class="intro-container">
+            <div class="intro-box">
+                <h2>Sobre este Portafolio</h2>
+                <div class="divider"></div>
+                <p>Este sitio web consolida los aprendizajes obtenidos en la asignatura, presentando evidencias profesionales de análisis espacial, teledetección y publicación de mapas web.</p>
+            </div>
+        </div>
+    </section>
+
+    <main id="portfolio" class="container">
+        <div class="section-header">
+            <h2>Galería de Prácticas</h2>
+            <p>Selecciona una tarjeta para ver el detalle</p>
+        </div>
+        
+        <div class="grid-container">
+
+             <article class="card">
+                <div class="card-image placeholder-img"></div>
+                <div class="card-content">
+                    <h3>Práctica 1: Introducción</h3>
+                    <p>Captura de pantalla inicial del entorno de trabajo.</p>
+                    <span class="tag">Imagen (PNG/JPG)</span>
+                    <a href="assets/images/p1_captura.png" target="_blank" class="btn-card">Ver Imagen</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-pdf"></div>
+                <div class="card-content">
+                    <h3>Práctica 3: Climatología</h3>
+                    <p>Mapa de temperaturas medias en España (Junio 2024).</p>
+                    <span class="tag">Documento PDF</span>
+                    <a href="#" onclick="openPDF('assets/docs/TEMPERATURAS.pdf'); return false;" class="btn-card">Ver Mapa</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-map"></div>
+                <div class="card-content">
+                    <h3>Práctica 4: Zonas Válidas</h3>
+                    <p>Visualización de capa Shapefile en web.</p>
+                    <span class="tag">WebMap</span>
+                    <a href="practicas/p4_zonas/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-map"></div>
+                <div class="card-content">
+                    <h3>Práctica 5: Severidad</h3>
+                    <p>Análisis Raster (GeoTIFF) de severidad.</p>
+                    <span class="tag">WebMap</span>
+                    <a href="practicas/p5_severidad/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-graph"></div>
+                <div class="card-content">
+                    <h3>Práctica 7: Estadísticas</h3>
+                    <p>Tabla de resultados y gráfico de rendimiento.</p>
+                    <span class="tag">JPG / HTML</span>
+                    <a href="assets/images/p7_grafico.jpg" target="_blank" class="btn-card">Ver Gráfico</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-map"></div>
+                <div class="card-content">
+                    <h3>Práctica 8: Madrid</h3>
+                    <p>Contenedores y Accidentes en Madrid.</p>
+                    <span class="tag">WebMap</span>
+                    <a href="practicas/p8_madrid/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-sat"></div>
+                <div class="card-content">
+                    <h3>Práctica 9: Índices SAVI y EVI</h3>
+                    <p>Imágenes resultantes del cálculo de índices.</p>
+                    <span class="tag">WebMap</span>
+                    <a href="practicas/p9_indices/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-image placeholder-video"></div>
+                <div class="card-content">
+                    <h3>Práctica 10: Animación Temporal</h3>
+                    <p>Evolución de índices (GIF/Video).</p>
+                    <span class="tag">WebMap / GIF</span>
+                    <a href="practicas/p10_video/index.html" target="_blank" class="btn-card">Ver Animación</a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="pdfModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3 id="modalTitle">Visualizador de Documento</h3>
+        
+        <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
+        
+        <div class="modal-footer">
+            <a id="downloadLink" href="" target="_blank" class="btn-card" style="background-color: #333;">Descargar / Abrir Pantalla Completa</a>
+        </div>
+    </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Portafolio de Tecnologías de la Información Geográfica.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
