@@ -38,6 +38,16 @@ function openPDF(path) {
     document.body.style.overflow = "hidden"; 
 }
 
+// FUNCIÓN PARA ABRIR IMÁGENES O GRÁFICOS
+function openImage(path) {
+    modal.style.display = "block";
+    iframe.src = path; // El navegador renderiza la imagen dentro del iframe
+    downloadLink.href = path; // Mantiene la opción de descargar el gráfico
+    
+    // Cambiamos el título si fuera necesario o simplemente bloqueamos scroll
+    document.body.style.overflow = "hidden"; 
+}
+
 // CERRAR AL PULSAR LA X
 closeBtn.onclick = function() {
     closeModal();
