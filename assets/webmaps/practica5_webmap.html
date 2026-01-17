@@ -2,98 +2,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Práctica 5 - Severidad Raster</title>
-    
+    <title>Mapa de Severidad dNBR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        #map { height: 100vh; width: 100%; }
-        .info-panel {
-            position: absolute; top: 10px; left: 10px;
-            background: white; padding: 15px; border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3); z-index: 1000;
-        }
-        .legend {
-            position: absolute; bottom: 30px; right: 10px;
-            background: white; padding: 15px; border-radius: 5px;
-            z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .legend-item { display: flex; align-items: center; margin: 5px 0; }
-        .legend-color { width: 30px; height: 20px; margin-right: 10px; border: 1px solid #333; }
-        #loading {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 20px; border-radius: 8px; z-index: 2000;
-        }
+        #map { height: 100vh; width: 100%; margin: 0; }
+        .legend { background: white; padding: 10px; line-height: 18px; color: #555; box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; }
+        .legend i { width: 18px; height: 12px; float: left; margin-right: 8px; opacity: 0.7; }
     </style>
 </head>
 <body>
 
-    <div id="loading">Cargando Raster Severidad...</div>
     <div id="map"></div>
-    
-    <div class="info-panel">
-        <h3>Zonas Válidas (Raster)</h3>
-        <p><strong>Archivo:</strong> Severidad.tif</p>
-        <p><strong>Región:</strong> Castilla y León</p>
-    </div>
-
-    <div class="legend">
-        <h4>Categorías</h4>
-        <div class="legend-item"><div class="legend-color" style="background: #2ca25f;"></div><span>Alto (3)</span></div>
-        <div class="legend-item"><div class="legend-color" style="background: #ffdd33;"></div><span>Medio (4)</span></div>
-        <div class="legend-item"><div class="legend-color" style="background: #de2d26;"></div><span>Bajo (5)</span></div>
-    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script src="https://unpkg.com/georaster"></script>
+    <script src="https://unpkg.com/proj4"></script> <script src="https://unpkg.com/georaster"></script>
     <script src="https://unpkg.com/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js"></script>
-    <script src="https://unpkg.com/geoblaze"></script>
 
     <script>
-        // Inicializar mapa
-        const map = L.map('map').setView([41.5, -4], 7);
+        const map = L.map('map').setView([0, 0], 2);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; CartoDB'
-        }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        // NOMBRE CORREGIDO según tu captura de VS Code
-        const tiffUrl = "Severidad.tif"; 
+        // Definimos la escala de severidad dNBR
+        function getColor(d) {
+            return d > 660  ? '#7a0000' : // Severidad Alta
+                   d > 440  ? '#ff0000' : // Severidad Media-Alta
+                   d > 270  ? '#ffaa00' : // Severidad Media-Baja
+                   d > 100  ? '#ffff00' : // Severidad Baja
+                   d > -100 ? '#00ff00' : // No quemado
+                              '#006400' ; // Rebrote vegetación
+        }
 
-        fetch(tiffUrl)
-            .then(response => {
-                if (!response.ok) throw new Error("No se encuentra el archivo Severidad.tif en esta carpeta");
-                return response.arrayBuffer();
-            })
+        const url = "Severidad.tif";
+
+        fetch(url)
+            .then(response => response.arrayBuffer())
             .then(arrayBuffer => {
                 parseGeoraster(arrayBuffer).then(georaster => {
                     
                     const layer = new GeoRasterLayer({
                         georaster: georaster,
-                        opacity: 0.8,
+                        opacity: 0.7,
                         pixelValuesToColorFn: function(pixelValues) {
                             const val = pixelValues[0];
-                            // Usamos comparaciones redondeadas por si el raster tiene decimales
-                            if (val >= 2.5 && val < 3.5) return '#2ca25f'; // Clase 3
-                            if (val >= 3.5 && val < 4.5) return '#ffdd33'; // Clase 4
-                            if (val >= 4.5 && val < 5.5) return '#de2d26'; // Clase 5
-                            return null;
+                            if (isNaN(val) || val === georaster.noDataValue) return null;
+                            return getColor(val);
                         },
                         resolution: 128
                     });
 
                     layer.addTo(map);
+                    
+                    // Esto "vuela" automáticamente a donde está el archivo en el mundo
                     map.fitBounds(layer.getBounds());
-                    document.getElementById('loading').style.display = 'none';
                 });
             })
-            .catch(err => {
-                console.error(err);
-                document.getElementById('loading').innerHTML = `<strong>Error:</strong> ${err.message}<br><small>Asegúrate de usar Live Server</small>`;
-            });
+            .catch(error => console.error("Error cargando el TIFF:", error));
+
+        // Añadir Leyenda
+        const legend = L.control({position: 'bottomright'});
+        legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML += '<h4>Severidad (dNBR)</h4>';
+            div.innerHTML += '<i style="background: #7a0000"></i> Muy Alta (>660)<br>';
+            div.innerHTML += '<i style="background: #ff0000"></i> Alta (440-660)<br>';
+            div.innerHTML += '<i style="background: #ffaa00"></i> Moderada (270-440)<br>';
+            div.innerHTML += '<i style="background: #ffff00"></i> Baja (100-270)<br>';
+            div.innerHTML += '<i style="background: #00ff00"></i> No quemado';
+            return div;
+        };
+        legend.addTo(map);
     </script>
 </body>
 </html>
