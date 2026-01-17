@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 // VARIABLES DEL MODAL
 const modal = document.getElementById("pdfModal");
 const iframe = document.getElementById("pdfFrame");
