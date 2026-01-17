@@ -45,7 +45,9 @@
         <div class="grid-container">
 
              <article class="card">
-                <div class="card-image placeholder-img"></div>
+                <div class="card-image placeholder-img">
+
+                </div>
                 <div class="card-content">
                     <h3>Práctica 1: Introducción</h3>
                     <p>Captura de pantalla inicial del entorno de trabajo.</p>
@@ -70,7 +72,7 @@
                     <h3>Práctica 4: Zonas Válidas</h3>
                     <p>Visualización de capa Shapefile en web.</p>
                     <span class="tag">WebMap</span>
-                    <a href="practicas/p4_zonas/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                    <a href="#" onclick="openWebMap('assets/webmaps/practica4_webmap.html', 'Práctica 4: Zonas Válidas'); return false;" class="btn-card">Explorar Mapa</a>
                 </div>
             </article>
 
@@ -80,7 +82,7 @@
                     <h3>Práctica 5: Severidad</h3>
                     <p>Análisis Raster (GeoTIFF) de severidad.</p>
                     <span class="tag">WebMap</span>
-                    <a href="practicas/p5_severidad/index.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                    <a href="#" onclick="openWebMap('assets/webmaps/practica5_webmap.html', 'Práctica 5: Severidad'); return false;" class="btn-card">Explorar Mapa</a>
                 </div>
             </article>
 
@@ -138,6 +140,21 @@
             <a id="downloadLink" href="" target="_blank" class="btn-card" style="background-color: #333;">Descargar / Abrir Pantalla Completa</a>
         </div>
     </div>
+    </div>
+
+    <!-- Modal para WebMaps -->
+    <div id="webmapModal" class="modal">
+        <div class="modal-content modal-webmap">
+            <span class="close-btn close-webmap">&times;</span>
+            <h3 id="webmapTitle">Visualizador de Mapa</h3>
+            
+            <iframe id="webmapFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
+            
+            <div class="modal-footer">
+                <a id="webmapFullscreen" href="" target="_blank" class="btn-card" style="background-color: #2ca25f;">Abrir en Pantalla Completa</a>
+                <button onclick="closeWebMapModal()" class="btn-card" style="background-color: #333;">Cerrar</button>
+            </div>
+        </div>
     </div>
 
     <footer>

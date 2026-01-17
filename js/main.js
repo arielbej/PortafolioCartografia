@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Scroll suave para los enlaces internos
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -5,16 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            
+            // Verifica que no sea solo "#"
+            if (targetId && targetId !== '#') {
+                const targetElement = document.querySelector(targetId);
 
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             }
         });
     });
 });
+
 
 // VARIABLES DEL MODAL
 const modal = document.getElementById("pdfModal");
@@ -49,3 +56,55 @@ function closeModal() {
     iframe.src = ""; // Limpia el iframe para que no siga cargando oculto
     document.body.style.overflow = "auto"; // Reactiva el scroll
 }
+
+
+// VARIABLES DEL MODAL WEBMAP
+const webmapModal = document.getElementById("webmapModal");
+const webmapFrame = document.getElementById("webmapFrame");
+const webmapTitle = document.getElementById("webmapTitle");
+const webmapFullscreen = document.getElementById("webmapFullscreen");
+const closeWebmapBtn = document.getElementsByClassName("close-webmap")[0];
+
+// FUNCIÓN PARA ABRIR WEBMAP
+function openWebMap(path, title) {
+    webmapModal.style.display = "block";
+    webmapFrame.src = path;
+    webmapTitle.textContent = title || "Visualizador de Mapa";
+    webmapFullscreen.href = path;
+    
+    // Evita que se mueva la página de fondo
+    document.body.style.overflow = "hidden";
+}
+
+// FUNCIÓN PARA CERRAR WEBMAP MODAL
+function closeWebMapModal() {
+    webmapModal.style.display = "none";
+    webmapFrame.src = ""; // Limpia el iframe
+    document.body.style.overflow = "auto";
+}
+
+// CERRAR AL PULSAR LA X
+if (closeWebmapBtn) {
+    closeWebmapBtn.onclick = function() {
+        closeWebMapModal();
+    }
+}
+
+// CERRAR AL PULSAR FUERA DEL CONTENIDO
+window.addEventListener('click', function(event) {
+    if (event.target == webmapModal) {
+        closeWebMapModal();
+    }
+});
+
+// Cerrar modal con tecla ESC
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        if (webmapModal.style.display === "block") {
+            closeWebMapModal();
+        }
+        if (modal.style.display === "block") {
+            closeModal();
+        }
+    }
+});
