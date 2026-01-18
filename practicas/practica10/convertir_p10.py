@@ -4,97 +4,74 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from rasterio.enums import Resampling
+import os
 
 # --- CONFIGURACIÓN ---
-input_tif = "MarcVilagrosaCaturla (2).tif" # Asegúrate que el nombre coincida exactamente
-output_html = "practica10.html"
-titulo_mapa = "Práctica 10: Índice NDWI (Google Earth Engine)"
+tif_landsat = "MarcVilagrosaCaturla.tif" 
+tif_sentinel = "Sentinel.tif"  # Cambia por tu archivo real
+output_html = "practica10_interactiva.html"
+titulo_mapa = "Practica 10 - Mapas Interactivos con Folium"
 
-def generar_mapa_ndwi(input_file, output_file):
-    print(f"Procesando {input_file}...")
+def procesar_tif_a_png(input_file, output_png_name, factor_reduccion=2):
+    if not os.path.exists(input_file):
+        print(f"Error: No se encuentra {input_file}")
+        return None, None
 
     with rasterio.open(input_file) as src:
-        # 1. Optimización: Leer con 'decimation' para reducir resolución si es muy grande
-        # Factor de reducción (1 = tamaño original, 2 = mitad, 4 = cuarto...)
-        # Si el TIF pesa más de 10MB, sube esto a 2 o 4.
-        factor_reduccion = 2 
-        
-        data = src.read(
-            1,
-            out_shape=(
-                src.count,
-                int(src.height / factor_reduccion),
-                int(src.width / factor_reduccion)
-            ),
-            resampling=Resampling.bilinear
-        )
-        
-        # Actualizar la transformación (georeferencia) para la nueva resolución
-        transform = src.transform * src.transform.scale(
-            (src.width / data.shape[1]),
-            (src.height / data.shape[0])
-        )
-        
-        # Obtener los límites geográficos (bounds)
+        data = src.read(1, out_shape=(src.count, int(src.height/factor_reduccion), int(src.width/factor_reduccion)), resampling=Resampling.bilinear)
+        transform = src.transform * src.transform.scale((src.width / data.shape[1]), (src.height / data.shape[0]))
         bounds = rasterio.transform.array_bounds(data.shape[0], data.shape[1], transform)
-        min_lon, min_lat, max_lon, max_lat = bounds
+        # Leaflet usa [[lat_min, lon_min], [lat_max, lon_max]]
+        folium_bounds = [[bounds[1], bounds[0]], [bounds[3], bounds[2]]]
 
-        # 2. Manejo de datos (NDWI suele ir de -1 a 1, o valores cercanos)
-        # Enmascarar valores 'NoData' o nulos
         if src.nodata is not None:
             data = np.ma.masked_equal(data, src.nodata)
-        
-        # A veces GEE devuelve nans, los enmascaramos
         data = np.ma.masked_invalid(data)
 
-        # 3. Normalización y Paleta de Color (Azules)
-        # NDWI: Valores altos (positivos) son agua, bajos (negativos) tierra.
-        # Ajustamos vmin y vmax para resaltar el agua.
         norm = plt.Normalize(vmin=-0.5, vmax=0.5) 
-        cmap = cm.Blues  # Paleta azul solicitada
+        image_colored = cm.Blues(norm(data))
+        image_colored[..., 3] = np.where(data.mask, 0, 0.8)
+        plt.imsave(output_png_name, image_colored)
         
-        # Convertir datos a imagen RGBA (coloreada)
-        image_colored = cmap(norm(data))
-        
-        # Hacer transparentes los valores vacíos (donde estaba la máscara)
-        image_colored[..., 3] = np.where(data.mask, 0, 0.8) # 0.8 es la opacidad general
+        return folium_bounds, output_png_name
 
-        # Guardar imagen temporalmente para Folium
-        plt.imsave('overlay_ndwi.png', image_colored, cmap=cmap)
+def generar_mapa():
+    bounds_l, png_l = procesar_tif_a_png(tif_landsat, "overlay_landsat.png")
+    bounds_s, png_s = procesar_tif_a_png(tif_sentinel, "overlay_sentinel.png")
 
-    # 4. Crear el mapa base
-    # Calculamos el centro
-    center_lat = (min_lat + max_lat) / 2
-    center_lon = (min_lon + max_lon) / 2
+    if not bounds_l or not bounds_s: return
 
-    m = folium.Map(
-        location=[center_lat, center_lon],
-        zoom_start=11,
-        tiles='CartoDB positron', # Fondo limpio
-        control_scale=True
-    )
+    # Crear mapa
+    m = folium.Map(location=[bounds_l[0][0], bounds_l[0][1]], zoom_start=11, tiles='CartoDB positron')
 
-    # Añadir título
-    title_html = f'''
-        <h3 align="center" style="font-size:16px"><b>{titulo_mapa}</b></h3>
+    # Añadir capas
+    folium.raster_layers.ImageOverlay(image=png_l, bounds=bounds_l, name="Landsat", opacity=0.7).add_to(m)
+    folium.raster_layers.ImageOverlay(image=png_s, bounds=bounds_s, name="Sentinel-2", opacity=0.7).add_to(m)
+
+    # --- INYECCIÓN DE BOTONES DE NAVEGACIÓN ---
+    # Usamos JS para decirle al mapa: "Ajusta la vista a estos límites"
+    botones_html = f'''
+    <div style="position: fixed; 
+                top: 100px; left: 10px; width: 160px; height: auto; 
+                z-index:9999; background-color: white;
+                padding: 10px; border: 2px solid #3388ff; border-radius: 8px;
+                font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+        <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: bold; color: #333;">IR A MODELO:</p>
+        <button onclick="{m.get_name()}.fitBounds({bounds_l})" 
+                style="width: 100%; margin-bottom: 5px; cursor: pointer; background: #e7f0ff; border: 1px solid #3388ff; border-radius: 4px;">
+            🛰️ Landsat
+        </button>
+        <button onclick="{m.get_name()}.fitBounds({bounds_s})" 
+                style="width: 100%; cursor: pointer; background: #e7f0ff; border: 1px solid #3388ff; border-radius: 4px;">
+            🛰️ Sentinel-2
+        </button>
+    </div>
     '''
-    m.get_root().html.add_child(folium.Element(title_html))
+    m.get_root().html.add_child(folium.Element(botones_html))
 
-    # 5. Superponer la imagen
-    folium.raster_layers.ImageOverlay(
-        image='overlay_ndwi.png',
-        bounds=[[min_lat, min_lon], [max_lat, max_lon]],
-        opacity=0.7,
-        name="NDWI (Agua)"
-    ).add_to(m)
-
-    # Añadir control de capas
-    folium.LayerControl().add_to(m)
-
-    # Guardar
-    m.save(output_file)
-    print(f"¡Mapa guardado como {output_file}!")
-    print("Recuerda mover 'index.html' y 'overlay_ndwi.png' a tu carpeta 'practicas/p10_video/'")
+    folium.LayerControl(collapsed=False).add_to(m)
+    m.save(output_html)
+    print(f"Mapa generado con botones en: {output_html}")
 
 if __name__ == "__main__":
-    generar_mapa_ndwi(input_tif, output_html)
+    generar_mapa()
