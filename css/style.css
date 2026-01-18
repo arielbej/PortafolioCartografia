@@ -181,6 +181,8 @@ h1, h2, h3 {
 }
 
 /* TARJETAS */
+
+
 .card {
     background: var(--white);
     border-radius: 12px;
@@ -199,6 +201,7 @@ h1, h2, h3 {
 
 .card-image {
     height: 200px;
+    width: 100%;
     background-color: #ecf0f1;
     background-size: cover;
     background-position: center;
@@ -331,5 +334,30 @@ footer {
     .modal-content {
         width: 95%;
         margin: 10% auto;
+    }
+}
+
+/* Modal para WebMaps - más grande que el de PDFs */
+.modal-webmap {
+    max-width: 95%;
+    width: 1200px;
+}
+
+#webmapFrame {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: 600px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-webmap {
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    #webmapFrame {
+        height: 400px;
+        min-height: 400px;
     }
 }
