@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Práctica 4 — Zonas Válidas</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html,body,#map { height:100%; margin:0; padding:0; }
+    body { font-family: Arial, sans-serif; }
+    .topbar { padding:8px 12px; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.1); z-index:1000 }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>Práctica 4:</strong> Visualizador de Zonas (GeoJSON) y Raster (GeoTIFF).
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/geotiff@1.0.0-beta.9/dist/geotiff.browser.min.js"></script>
+  <script src="https://unpkg.com/georaster@1.6.0/dist/georaster.browserify.min.js"></script>
+  <script src="https://unpkg.com/georaster-layer-for-leaflet@1.8.6/dist/georaster-layer-for-leaflet.browser.min.js"></script>
+
+  <script>
+    const map = L.map('map').setView([40.0, -3.5], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Rutas esperadas (coloca aquí tus ficheros)
+    const geojsonURL = '../../assets/webmaps/ZONAS_VALIDAS.geojson';
+    const geotiffURL = '../../assets/webmaps/RASTER.tif';
+
+    // Cargar GeoJSON (vector)
+    fetch(geojsonURL).then(r => {
+      if (!r.ok) throw new Error('GeoJSON no disponible');
+      return r.json();
+    }).then(data => {
+      const gj = L.geoJSON(data, {
+        style: () => ({ color: '#0077cc', weight: 1.5, fillOpacity: 0.2 }),
+        onEachFeature: (f, layer) => {
+          let props = f.properties ? Object.entries(f.properties).map(([k,v])=>`<b>${k}</b>: ${v}`).join('<br>') : '';
+          layer.bindPopup(props || 'Objeto sin propiedades');
+        }
+      }).addTo(map);
+      map.fitBounds(gj.getBounds());
+    }).catch(err => {
+      console.warn('No se cargó GeoJSON:', err.message);
+    });
+
+    // Cargar GeoTIFF (raster) usando georaster + georaster-layer-for-leaflet
+    fetch(geotiffURL).then(r => {
+      if (!r.ok) throw new Error('GeoTIFF no disponible');
+      return r.arrayBuffer();
+    }).then(arrayBuffer => parseGeoraster(arrayBuffer))
+    .then(georaster => {
+      const layer = new GeoRasterLayer({
+        georaster: georaster,
+        opacity: 0.7,
+        resolution: 256
+      });
+      layer.addTo(map);
+      // Ajustar vista al raster si no hay geojson
+      try { map.fitBounds(layer.getBounds()); } catch(e) { }
+    }).catch(err => {
+      console.warn('No se cargó GeoTIFF:', err.message);
+    });
+  </script>
+</body>
+</html>
