@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio Cartografía | Juan Bautista Peris, Marc Vilagrosa y Ariel Bejarán</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <header class="hero">
-        <div class="overlay"></div> <div class="hero-content">
+        <div class="overlay"></div>
+        <div class="hero-content">
             <h1>Portafolio de Cartografía Web</h1>
             <p class="subtitle">Recopilación de prácticas y proyectos espaciales</p>
             <p class="author">Realizado por: Juan Bautista Peris, Marc Vilagrosa y Ariel Bejarán</p>
-            
+
             <a href="#portfolio" class="btn-scroll">Ver Proyectos</a>
         </div>
-        
+
         <a href="#intro" class="scroll-down-arrow">
             <span>&#8595;</span> </a>
     </header>
@@ -31,7 +36,8 @@
             <div class="intro-box">
                 <h2>Sobre este Portafolio</h2>
                 <div class="divider"></div>
-                <p>Este sitio web consolida los aprendizajes obtenidos en la asignatura, presentando evidencias profesionales de análisis espacial, teledetección y publicación de mapas web.</p>
+                <p>Este sitio web consolida los aprendizajes obtenidos en la asignatura, presentando evidencias
+                    profesionales de análisis espacial, teledetección y publicación de mapas web.</p>
             </div>
         </div>
     </section>
@@ -41,10 +47,10 @@
             <h2>Galería de Prácticas</h2>
             <p>Selecciona una tarjeta para ver el detalle</p>
         </div>
-        
+
         <div class="grid-container">
 
-             <article class="card">
+            <article class="card">
                 <div class="card-image placeholder-img">
                     <img src="assets/images/p1_captura.png" alt="Práctica 1" class="card-image">
                 </div>
@@ -52,19 +58,21 @@
                     <h3>Práctica 1: Introducción</h3>
                     <p>Captura de pantalla inicial del entorno de trabajo.</p>
                     <span class="tag">Imagen (PNG/JPG)</span>
-                    <a onclick="openImage('assets/images/p1_captura.png')" target="_blank" class="btn-card">Ver Imagen</a>
+                    <a onclick="openImage('assets/images/p1_captura.png')" target="_blank" class="btn-card">Ver
+                        Imagen</a>
                 </div>
             </article>
 
             <article class="card">
                 <div class="card-image placeholder-pdf">
-                <img src="assets/images/preview_practica3.png" alt="Práctica 3" class="card-image">
+                    <img src="assets/images/preview_practica3.png" alt="Práctica 3" class="card-image">
                 </div>
                 <div class="card-content">
                     <h3>Práctica 3: Climatología</h3>
                     <p>Mapa de temperaturas medias en España (Junio 2024).</p>
                     <span class="tag">Documento PDF</span>
-                    <a href="#" onclick="openPDF('assets/docs/TEMPERATURAS.pdf'); return false;" class="btn-card">Ver Mapa</a>
+                    <a href="#" onclick="openPDF('assets/docs/TEMPERATURAS.pdf'); return false;" class="btn-card">Ver
+                        Mapa</a>
                 </div>
             </article>
 
@@ -76,7 +84,9 @@
                     <h3>Práctica 4: Zonas Válidas</h3>
                     <p>Visualización de capa Shapefile en web.</p>
                     <span class="tag">WebMap</span>
-                    <a href="#" onclick="openWebMap('assets/webmaps/practica4_webmap.html', 'Práctica 4: Zonas Válidas'); return false;" class="btn-card">Explorar Mapa</a>
+                    <a href="#"
+                        onclick="openWebMap('assets/webmaps/practica4_webmap.html', 'Práctica 4: Zonas Válidas'); return false;"
+                        class="btn-card">Explorar Mapa</a>
                 </div>
             </article>
 
@@ -88,37 +98,49 @@
                     <h3>Práctica 5: Severidad</h3>
                     <p>Análisis Raster (GeoTIFF) de severidad.</p>
                     <span class="tag">WebMap</span>
-                    <a href="#" onclick="openWebMap('assets/webmaps/practica5_webmap.html', 'Práctica 5: Severidad'); return false;" class="btn-card">Explorar Mapa</a>
+                    <a href="#"
+                        onclick="openWebMap('assets/webmaps/practica5_webmap.html', 'Práctica 5: Severidad'); return false;"
+                        class="btn-card">Explorar Mapa</a>
                 </div>
             </article>
 
             <article class="card">
                 <div class="card-image placeholder-graph">
-                <img src="assets/images/grafico_rendimiento.jpg" alt="Práctica 7" class="card-image">
+                    <img src="assets/images/grafico_rendimiento.jpg" alt="Práctica 7" class="card-image">
                 </div>
                 <div class="card-content">
                     <h3>Práctica 7: Estadísticas</h3>
-                    <p>Tabla de resultados y gráfico de rendimiento.</p>
-                    <span class="tag">JPG / HTML</span>
-                    <a onclick="openImage('assets/images/grafico_rendimiento.jpg')" target="_blank" class="btn-card">Ver Gráfico</a>
-                    <a onclick="openWebMap('assets/webmaps/Waypoints.html', 'Práctica 7: Estadísticas')" target="_blank" class="btn-card">Ver Tabla</a>
-
+                    <p>Tabla de waypoints y gráfico de elevación.</p>
+                    <span class="tag">Gráfico y Tabla</span>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: auto;">
+                        <a onclick="openImage('assets/images/grafico_rendimiento.jpg')" class="btn-card" style="flex: 1; cursor: pointer;">
+                            Ver Gráfico
+                        </a>
+                        <a onclick="openWebMap('assets/webmaps/Waypoints.html', 'Práctica 7: Tabla de Datos')" class="btn-card" style="flex: 1; cursor: pointer;">
+                            Ver Tabla
+                        </a>
+                    </div>
                 </div>
             </article>
 
             <article class="card">
-                <div class="card-image placeholder-map"></div>
+                <div class="card-image">
+                    <img src="practicas/practica8/captura_madrid.png" 
+                         alt="Mapa de Madrid" 
+                         class="card-image" 
+                         style="object-fit: cover;">
+                </div>
                 <div class="card-content">
                     <h3>Práctica 8: Madrid</h3>
-                    <p>Análisis de ubicación de Contenedores y registro de Accidentes.</p>
+                    <p>Análisis de ubicación de Contenedores y Accidentes.</p>
                     <span class="tag">WebMap Doble</span>
                     
                     <div style="display: flex; gap: 10px; margin-top: auto;">
-                        <a href="practicas/practica8/madrid_accidentes.html" target="_blank" class="btn-card" style="flex: 1; text-align: center; font-size: 0.85rem; padding: 12px 5px;">
+                        <a onclick="openWebMap('practicas/practica8/madrid_accidentes.html', 'Madrid: Accidentes')" class="btn-card" style="flex: 1; cursor: pointer;">
                             Accidentes
                         </a>
-
-                        <a href="practicas/practica8/madrid_contenedores.html" target="_blank" class="btn-card" style="flex: 1; text-align: center; font-size: 0.85rem; padding: 12px 5px;">
+                        <a onclick="openWebMap('practicas/practica8/madrid_contenedores.html', 'Madrid: Contenedores')" class="btn-card" style="flex: 1; cursor: pointer;">
                             Contenedores
                         </a>
                     </div>
@@ -126,22 +148,40 @@
             </article>
 
             <article class="card">
-                <div class="card-image placeholder-sat"></div>
+                <div class="card-image">
+                    <img src="practicas/practica9/SAVI_POST.png" 
+                         alt="Resultado SAVI Post-Incendio" 
+                         class="card-image" 
+                         style="object-fit: cover;">
+                </div>
                 <div class="card-content">
                     <h3>Práctica 9: Índices SAVI y EVI</h3>
-                    <p>Cálculo de índices de vegetación con Google Earth Engine (SAVI y EVI).</p>
+                    <p>Cálculo de índices de vegetación.</p>
                     <span class="tag">WebMap</span>
-                    <a href="practicas/practica9/prac9.html" target="_blank" class="btn-card">Explorar Mapa</a>
+                    
+                    <a onclick="openWebMap('practicas/practica9/prac9.html', 'Práctica 9: Índices de Vegetación')" class="btn-card" style="cursor: pointer;">
+                        Explorar Mapa
+                    </a>
                 </div>
-            </article>  
+            </article>
 
             <article class="card">
-                <div class="card-image placeholder-video"></div>
+                <div class="card-image placeholder-sat">
+                    <img src="practicas/practica10/timelapse.gif" alt="Timelapse NDWI" class="card-image" style="object-fit: cover;">
+                </div>
                 <div class="card-content">
-                    <h3>Práctica 10: Animación Temporal</h3>
-                    <p>Evolución de índices (GIF/Video).</p>
-                    <span class="tag">WebMap / GIF</span>
-                    <a href="practicas/p10_video/index.html" target="_blank" class="btn-card">Ver Animación</a>
+                    <h3>Práctica 10: Animación</h3>
+                    <p>Evolución temporal de masas de agua (NDWI) con GEE.</p>
+                    <span class="tag">GEE & Python</span>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: auto;">
+                        <a onclick="openWebMap('practicas/practica10/practica10.html', 'Práctica 10: Mapa Interactivo')" class="btn-card" style="flex: 1; cursor: pointer;">
+                            Ver Mapa
+                        </a>
+                        <a onclick="openWebMap('practicas/practica10/ver_gif.html', 'Timelapse Evolutivo')" class="btn-card" style="flex: 1; cursor: pointer;">
+                            Ver Video
+                        </a>
+                    </div>
                 </div>
             </article>
 
@@ -149,16 +189,17 @@
     </main>
 
     <div id="pdfModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h3 id="modalTitle">Visualizador de Documento</h3>
-        
-        <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
-        
-        <div class="modal-footer">
-            <a id="downloadLink" href="" target="_blank" class="btn-card" style="background-color: #333;">Descargar / Abrir Pantalla Completa</a>
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="modalTitle">Visualizador de Documento</h3>
+
+            <iframe id="pdfFrame" src="" width="100%" height="500px"></iframe>
+
+            <div class="modal-footer">
+                <a id="downloadLink" href="" target="_blank" class="btn-card" style="background-color: #333;">Descargar
+                    / Abrir Pantalla Completa</a>
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Modal para WebMaps -->
@@ -166,17 +207,18 @@
         <div class="modal-content modal-webmap">
             <span class="close-btn close-webmap">&times;</span>
             <h3 id="webmapTitle">Visualizador de Mapa</h3>
-            
+
             <iframe id="webmapFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
-            
+
             <div class="modal-footer">
-                <a id="webmapFullscreen" href="" target="_blank" class="btn-card" style="background-color: #2ca25f;">Abrir en Pantalla Completa</a>
+                <a id="webmapFullscreen" href="" target="_blank" class="btn-card"
+                    style="background-color: #2ca25f;">Abrir en Pantalla Completa</a>
                 <button onclick="closeWebMapModal()" class="btn-card" style="background-color: #333;">Cerrar</button>
             </div>
         </div>
     </div>
 
-    
+
 
     <footer>
         <p>&copy; 2025 Portafolio de Tecnologías de la Información Geográfica.</p>
@@ -184,4 +226,5 @@
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

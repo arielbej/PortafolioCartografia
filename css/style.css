@@ -361,3 +361,40 @@ footer {
         min-height: 400px;
     }
 }
+
+/* Contenedor para alinear botones */
+.btn-group {
+    display: flex;
+    gap: 10px; /* Espacio entre botones */
+    justify-content: space-between; /* O 'center' si los quieres pegados al centro */
+    padding: 15px; /* Ajusta según tu diseño actual */
+}
+
+/* Estilo base para ambos botones (para que tengan el mismo tamaño) */
+.btn-group button {
+    flex: 1; /* Esto hace que ambos botones ocupen el mismo ancho (50% cada uno) */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Color específico para el botón del MAPA (Azul) */
+.btn-map {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Color específico para el botón del VIDEO (Rojo/Naranja o distinto para diferenciar) */
+.btn-video {
+    background-color: #ff5722; /* Un tono naranja para video queda bien */
+    color: white;
+}
+
+/* Efecto Hover */
+.btn-group button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
